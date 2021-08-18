@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"go.haiyiyun.org/log"
-	"go.haiyiyun.org/utils/multipart"
+	"github.com/haiyiyun/log"
+	"github.com/haiyiyun/utils/multipart"
 )
 
 type Client struct {

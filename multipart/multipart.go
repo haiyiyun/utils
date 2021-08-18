@@ -6,7 +6,7 @@ import (
 	"mime/multipart"
 	"os"
 
-	"go.haiyiyun.org/log"
+	"github.com/haiyiyun/log"
 )
 
 func Write(w *multipart.Writer, params map[string][]string) error {

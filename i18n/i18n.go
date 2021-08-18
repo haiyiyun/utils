@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"go.haiyiyun.org/log"
+	"github.com/haiyiyun/log"
 )
 
 type I18nManager struct {

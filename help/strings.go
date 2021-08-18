@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"go.haiyiyun.org/uuid"
+	"github.com/haiyiyun/uuid"
 )
 
 type Strings string

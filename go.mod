@@ -1,3 +1,3 @@
-module go.haiyiyun.org/utils
+module github.com/haiyiyun/utils
 
 go 1.16
