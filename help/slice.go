@@ -50,6 +50,41 @@ func (s Slice) CheckPartItem(item string, items ...string) bool {
 	return b || bis
 }
 
+func (s Slice) CheckDigital(digital int) bool {
+	if is, ok := s.I.([]int); ok {
+		for _, i := range is {
+			if digital == i {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func (s Slice) CheckMustDigital(digital int, digitals ...int) bool {
+	b := s.CheckDigital(digital)
+	for _, digital := range digitals {
+		if b = s.CheckDigital(digital); !b {
+			break
+		}
+	}
+
+	return b
+}
+
+func (s Slice) CheckPartDigital(digital int, digitals ...int) bool {
+	b := s.CheckDigital(digital)
+	bis := false
+	for _, digital := range digitals {
+		if bis = s.CheckDigital(digital); bis {
+			break
+		}
+	}
+
+	return b || bis
+}
+
 func (s Slice) ConvInt() []int {
 	ii := []int{}
 	if ss, ok := s.I.([]string); ok {
