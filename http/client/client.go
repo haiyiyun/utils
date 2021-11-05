@@ -16,8 +16,9 @@ import (
 )
 
 type Client struct {
-	useGzip bool
 	*http.Client
+	header  http.Header
+	useGzip bool
 }
 
 func TimeoutDialer(cTimeout, rwTimeout time.Duration) func(netw, addr string) (c net.Conn, err error) {
@@ -52,37 +53,56 @@ func NewClient() *Client {
 	return c
 }
 
+func NewClientWithHeader(header http.Header) *Client {
+	c := &Client{
+		Client: &http.Client{},
+		header: header,
+	}
+
+	c.Transport = SkipVerifyAndTimeOutTransport(true, 60*time.Second, 60*time.Second, 2*time.Minute)
+	return c
+}
+
 func (c *Client) Gzip() *Client {
 	c.useGzip = true
 	return c
 }
 
-func (c *Client) GzipDisAble() *Client {
+func (c *Client) GzipDisable() *Client {
 	c.useGzip = false
 	return c
 }
 
-func (c *Client) doMethod(method, rawurl string, bodyType string, body io.Reader) (*http.Response, error) {
+func (c *Client) doMethod(method, rawurl string, header http.Header, body io.Reader) (*http.Response, error) {
 	req, err := http.NewRequest(method, rawurl, body)
 	if err != nil {
-		log.Error("<doMethod> NewRequest error:", err)
+		log.Error("NewRequest error:", err)
 		return nil, err
 	}
 
 	if c.useGzip {
-		req.Header.Add("Content-Encoding", "gzip")
+		header.Add("Content-Encoding", "gzip")
 	}
 
-	if bodyType != "" {
-		req.Header.Set("Content-Type", bodyType)
+	if c.header != nil && len(c.header) > 0 {
+		for k, v := range c.header {
+			if _, found := header[k]; !found {
+				header[k] = v
+			}
+		}
 	}
 
+	req.Header = header
 	resp, respErr := c.Do(req)
 	return resp, respErr
 }
 
-func (c *Client) get(rawurl string, bodyType string, body io.Reader) (*http.Response, error) {
-	return c.doMethod("GET", rawurl, bodyType, body)
+func (c *Client) get(rawurl string, header http.Header, body io.Reader) (*http.Response, error) {
+	return c.doMethod("GET", rawurl, header, body)
+}
+
+func (c *Client) Get(rawurl string) (*http.Response, error) {
+	return c.get(rawurl, nil, nil)
 }
 
 func (c *Client) GetForm(rawurl string, data url.Values) (*http.Response, error) {
@@ -97,11 +117,14 @@ func (c *Client) GetForm(rawurl string, data url.Values) (*http.Response, error)
 		ir = strings.NewReader(data.Encode())
 	}
 
-	return c.get(rawurl, "application/x-www-form-urlencoded", ir)
+	header := http.Header{}
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	return c.get(rawurl, header, ir)
 }
 
-func (c *Client) Post(rawurl string, bodyType string, body io.Reader) (*http.Response, error) {
-	return c.doMethod("POST", rawurl, bodyType, body)
+func (c *Client) Post(rawurl string, header http.Header, body io.Reader) (*http.Response, error) {
+	return c.doMethod("POST", rawurl, header, body)
 }
 
 func (c *Client) PostForm(rawurl string, data url.Values) (*http.Response, error) {
@@ -116,7 +139,10 @@ func (c *Client) PostForm(rawurl string, data url.Values) (*http.Response, error
 		ir = strings.NewReader(data.Encode())
 	}
 
-	return c.Post(rawurl, "application/x-www-form-urlencoded", ir)
+	header := http.Header{}
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	return c.Post(rawurl, header, ir)
 }
 
 func (c *Client) PostMultipart(rawurl string, data map[string][]string) (resp *http.Response, err error) {
@@ -133,11 +159,14 @@ func (c *Client) PostMultipart(rawurl string, data map[string][]string) (resp *h
 		body = bufw
 	}
 
-	return c.Post(rawurl, ct, body)
+	header := http.Header{}
+	header.Set("Content-Type", ct)
+
+	return c.Post(rawurl, header, body)
 }
 
-func (c *Client) Put(rawurl string, bodyType string, body io.Reader) (*http.Response, error) {
-	return c.doMethod("PUT", rawurl, bodyType, body)
+func (c *Client) Put(rawurl string, header http.Header, body io.Reader) (*http.Response, error) {
+	return c.doMethod("PUT", rawurl, header, body)
 }
 
 func (c *Client) PutForm(rawurl string, data url.Values) (*http.Response, error) {
@@ -152,15 +181,34 @@ func (c *Client) PutForm(rawurl string, data url.Values) (*http.Response, error)
 		ir = strings.NewReader(data.Encode())
 	}
 
-	return c.Put(rawurl, "application/x-www-form-urlencoded", ir)
+	header := http.Header{}
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	return c.Put(rawurl, header, ir)
+}
+
+func (c *Client) delete(rawurl string, header http.Header, body io.Reader) (*http.Response, error) {
+	return c.doMethod("DELETE", rawurl, header, body)
 }
 
 func (c *Client) Delete(rawurl string) (*http.Response, error) {
-	req, err := http.NewRequest("DELETE", rawurl, nil)
-	if err != nil {
-		return nil, err
+	return c.delete(rawurl, nil, nil)
+}
+
+func (c *Client) DeleteForm(rawurl string, data url.Values) (*http.Response, error) {
+	var ir io.Reader
+	if c.useGzip {
+		bufw := new(bytes.Buffer)
+		gzw := gzip.NewWriter(bufw)
+		gzw.Write([]byte(data.Encode()))
+		gzw.Close()
+		ir = bufw
+	} else {
+		ir = strings.NewReader(data.Encode())
 	}
 
-	resp, respErr := c.Do(req)
-	return resp, respErr
+	header := http.Header{}
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	return c.delete(rawurl, header, ir)
 }
