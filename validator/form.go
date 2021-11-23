@@ -4,11 +4,12 @@ import (
 	"net/url"
 )
 
-func Form(v interface{}, values url.Values) error {
-	err := Decoder.Decode(v, values)
-	if err != nil {
-		return err
+func FormStruct(v interface{}, values url.Values) (err error) {
+	if err = Decoder.Decode(&v, values); err != nil {
+		return
 	}
 
-	return Validate.Struct(v)
+	err = Validate.Struct(v)
+
+	return
 }
