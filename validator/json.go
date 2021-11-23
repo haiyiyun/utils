@@ -2,7 +2,7 @@ package validator
 
 import "encoding/json"
 
-func FormJson(v interface{}, jsonRaw string) (err error) {
+func Json(v interface{}, jsonRaw string) (err error) {
 	if err = Validate.Var(jsonRaw, "required,json"); err != nil {
 		return
 	}
