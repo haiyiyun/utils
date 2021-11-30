@@ -6,14 +6,11 @@ import (
 	"net/url"
 )
 
-func JSON(rw http.ResponseWriter, code int, result interface{}, message string) {
-	rw.Header().Set("Content-Type", "application/json;charset=UTF-8")
-	rw.Header().Set("Cache-Control", "no-store")
-	rw.Header().Set("Pragma", "no-cache")
-
+func jsonBytes(code int, result interface{}, message string) (int, []byte) {
 	rr := ResponseResult{}
+	var statusCode int
 	if code == 0 || code == http.StatusOK {
-		rw.WriteHeader(http.StatusOK)
+		statusCode = http.StatusOK
 		rr.Type = ResponseResultSuccess
 		if message == "" {
 			message = "ok"
@@ -24,12 +21,12 @@ func JSON(rw http.ResponseWriter, code int, result interface{}, message string) 
 		}
 	} else {
 		if statusText := http.StatusText(code); statusText != "" {
-			rw.WriteHeader(code)
+			statusCode = code
 			if message == "" {
 				message = statusText
 			}
 		} else {
-			rw.WriteHeader(http.StatusOK)
+			statusCode = http.StatusOK
 		}
 
 		rr.Type = ResponseResultError
@@ -52,9 +49,24 @@ func JSON(rw http.ResponseWriter, code int, result interface{}, message string) 
 
 	jsonData, err := json.Marshal(rr)
 	if err != nil {
-		rw.Write([]byte(`{"code":500,"type":"error","message":"invalid json format"}`))
-		return
+		statusCode = http.StatusInternalServerError
+		jsonData = []byte(`{"code":500,"type":"error","message":"invalid json format"}`)
 	}
 
+	return statusCode, jsonData
+}
+
+func JSON(rw http.ResponseWriter, code int, result interface{}, message string) {
+	rw.Header().Set("Content-Type", "application/json;charset=UTF-8")
+	rw.Header().Set("Cache-Control", "no-store")
+	rw.Header().Set("Pragma", "no-cache")
+
+	statusCode, jsonData := jsonBytes(code, result, message)
+	rw.WriteHeader(statusCode)
 	rw.Write(jsonData)
+}
+
+func JSONString(code int, result interface{}, message string) string {
+	_, jsonData := jsonBytes(code, result, message)
+	return string(jsonData)
 }
