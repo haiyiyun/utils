@@ -9,11 +9,17 @@ import (
 
 func init() {
 	Decoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
-		return time.Parse("2006-01-02", vals[0])
+		d := help.Date{}
+		t, err := time.Parse("2006-01-02", vals[0])
+		d.Time = t
+		return d, err
 	}, help.Date{})
 
 	Decoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
-		return time.Parse("2006-01-02 15:04:05", vals[0])
+		dt := help.DateTime{}
+		t, err := time.Parse("2006-01-02 15:04:05", vals[0])
+		dt.Time = t
+		return dt, err
 	}, help.DateTime{})
 
 	Decoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
