@@ -111,6 +111,17 @@ func (s Slice) ConvBool() []bool {
 	return bb
 }
 
+func (s Slice) ObjectIDToStrings() []string {
+	strs := []string{}
+	if oids, ok := s.I.([]primitive.ObjectID); ok {
+		for _, oid := range oids {
+			strs = append(strs, oid.Hex())
+		}
+	}
+
+	return strs
+}
+
 func (s Slice) ConvObjectID() []primitive.ObjectID {
 	ids := []primitive.ObjectID{}
 	if ss, ok := s.I.([]string); ok {
