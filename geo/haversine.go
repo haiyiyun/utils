@@ -12,7 +12,7 @@ func hsin(theta float64) float64 {
 	return math.Pow(math.Sin(theta/2), 2)
 }
 
-// HaversineDistance returns the distance (in miles) between two points of
+// HaversineDistance returns the distance (in meters) between two points of
 //	 a given longitude and latitude relatively accurately (using a spherical
 //	 approximation of the Earth) through the Haversin Distance Formula for
 //	 great arc distance on a sphere with accuracy for small distances

@@ -15,12 +15,12 @@ const f = 1 / 298.257223563 // WGS-84 ellipsiod
 /*
 VincentyDistance computes the distances between two georgaphic coordinates
 Args:
-	p1: the 'starting' point, given in latitude, longitude as a Coord struct
+	p1: the 'starting' point, given in [0]longitude, [1]latitude as a PointCoordinates struct
 	p2: the 'ending' point
 Returns:
-	A 3 element tuple: distance between the 2 points given in (1) miles and (2) kilometers
-	The 3rd element will return true upon a successful computation or
-	false if the algorithm fails to converge. -1, -1, false is returned upon failure
+	A 2 element tuple: distance between the 2 points given in (1) meters
+	The second element will return true upon a successful computation or
+	false if the algorithm fails to converge. -1, false is returned upon failure
 */
 func VincentyDistance(p1, p2 geometry.PointCoordinates) (float64, error) {
 	// convert from degrees to radians

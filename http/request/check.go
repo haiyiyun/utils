@@ -40,14 +40,19 @@ func CheckUserUserAgentContains(r *http.Request, userAgent string) bool {
 	}
 }
 
+//distance单位:米
 func CheckUserLocation(r *http.Request, location geometry.PointCoordinates, maxDistance, minDistance float64) bool {
 	if claims := GetClaims(r); claims == nil {
 		return false
 	} else {
 		if claims.Location.Coordinates != geometry.NilPointCoordinates {
 			meters := geo.HaversineDistance(claims.Location.Coordinates, location)
-			if meters >= minDistance && minDistance <= maxDistance {
-				return true
+			if maxDistance > 0 && minDistance > 0 && maxDistance > minDistance {
+				return meters >= minDistance && meters <= maxDistance
+			} else if maxDistance > 0 {
+				return meters <= maxDistance
+			} else if minDistance > 0 {
+				return meters >= minDistance
 			} else {
 				return false
 			}
