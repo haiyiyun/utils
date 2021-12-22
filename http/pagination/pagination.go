@@ -25,7 +25,9 @@ func Parse(r *http.Request, cnt int64) Pagination {
 	pageSizeStr := r.URL.Query().Get(pageSizeTag)
 	if pageSizeStr == "" {
 		pageSizeTag = "pageSize"
-		pageSizeStr = r.URL.Query().Get(pageSizeTag)
+		if pageSizeStr = r.URL.Query().Get(pageSizeTag); pageSizeStr == "" {
+			pageSizeStr = "0"
+		}
 	}
 
 	showPageNumTag := "show_page_num"
@@ -48,20 +50,18 @@ func Parse(r *http.Request, cnt int64) Pagination {
 		pg.Page = i
 	}
 
-	if i, e := strconv.ParseInt(pageSizeStr, 10, 64); e == nil {
-		if i > 0 {
-			pg.PageSize = i
-		} else {
-			pg.PageSize = 10
-		}
+	pageSizeI, _ := strconv.ParseInt(pageSizeStr, 10, 64)
+	if pageSizeI > 0 {
+		pg.PageSize = pageSizeI
+	} else {
+		pg.PageSize = 10
 	}
 
-	if i, e := strconv.ParseInt(showPageNumStr, 10, 64); e == nil {
-		if i > 0 {
-			pg.ShowPageNum = i
-		} else {
-			pg.ShowPageNum = 5
-		}
+	showPageNumI, _ := strconv.ParseInt(showPageNumStr, 10, 64)
+	if showPageNumI > 0 {
+		pg.ShowPageNum = showPageNumI
+	} else {
+		pg.ShowPageNum = 5
 	}
 
 	if pg.Page > 0 {
