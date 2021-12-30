@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+
+	"github.com/haiyiyun/log"
 )
 
 func jsonBytes(code int, result interface{}, message string) (int, []byte) {
@@ -49,6 +51,7 @@ func jsonBytes(code int, result interface{}, message string) (int, []byte) {
 
 	jsonData, err := json.Marshal(rr)
 	if err != nil {
+		log.Error(err)
 		statusCode = http.StatusInternalServerError
 		jsonData = []byte(`{"code":500,"type":"error","message":"invalid json format"}`)
 	}
