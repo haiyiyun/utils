@@ -10,14 +10,23 @@ import (
 func init() {
 	Decoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
 		d := help.Date{}
-		t, err := time.Parse("2006-01-02", vals[0])
+		zoneLayout := "Z07:00"
+		localZone := time.Now().Format(zoneLayout)
+		timeStr := vals[0] + "T00:00:00" + localZone
+		t, err := time.Parse(time.RFC3339, timeStr)
 		d.Time = t
 		return d, err
 	}, help.Date{})
 
 	Decoder.RegisterCustomTypeFunc(func(vals []string) (interface{}, error) {
 		dt := help.DateTime{}
-		t, err := time.Parse("2006-01-02 15:04:05", vals[0])
+		zoneLayout := "Z07:00"
+		localZone := time.Now().Format(zoneLayout)
+		timeStr := vals[0]
+		timeByte := []byte(timeStr)
+		timeByte[10] = 'T'
+		timeStr = string(timeByte) + localZone
+		t, err := time.Parse(time.RFC3339, timeStr)
 		dt.Time = t
 		return dt, err
 	}, help.DateTime{})
