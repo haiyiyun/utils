@@ -162,8 +162,10 @@ func (c *Client) doMethod(method, rawurl string, header http.Header, body io.Rea
 
 	var ir io.Reader
 	bu := new(bytes.Buffer)
-	if _, err := bu.ReadFrom(body); err != nil {
-		return nil, err
+	if body != nil {
+		if _, err := bu.ReadFrom(body); err != nil {
+			return nil, err
+		}
 	}
 
 	if c.useGzip {
