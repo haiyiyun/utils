@@ -10,12 +10,12 @@ require (
 	github.com/haiyiyun/uuid v0.0.0-20211115101403-e9c2d7112f99
 	github.com/haiyiyun/validator v1.1.0
 	github.com/robfig/cron/v3 v3.0.1
-	go.mongodb.org/mongo-driver v1.12.1
+	go.mongodb.org/mongo-driver v1.17.1
 )
 
 require (
 	github.com/leodido/go-urn v1.2.1 // indirect
-	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
-	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
-	golang.org/x/text v0.7.0 // indirect
+	golang.org/x/crypto v0.26.0 // indirect
+	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
 )
