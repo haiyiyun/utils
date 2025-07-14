@@ -4,12 +4,12 @@ github.com/golang-jwt/jwt v3.2.2+incompatible h1:IfV12K8xAKAnZqdXVzCZ+TOjboZ2keL
 github.com/golang-jwt/jwt v3.2.2+incompatible/go.mod h1:8pz2t5EyA70fFQQSrl6XZXzqecmYZeUEB8OUGHkxJ+I=
 github.com/haiyiyun/log v0.0.0-20250713182740-69ca3d5834ba h1:TVMQ1qQr6uLaF3MQM5W0bxZq3/PQA11tUee7Bk8mPRw=
 github.com/haiyiyun/log v0.0.0-20250713182740-69ca3d5834ba/go.mod h1:m9u7lbhPdRTcrs+GUO6rqmvoqJzlv9Rm5dZwbf7hMlE=
-github.com/haiyiyun/mongodb v0.0.0-20220108162216-33ee0dca6d1c h1:Jf/EWDFDkIDyIJfKP8qsiltshc12qJODl0R6n3xI2gw=
-github.com/haiyiyun/mongodb v0.0.0-20220108162216-33ee0dca6d1c/go.mod h1:4ksG2Q7D7OEz+nA2tyoop5MjtuATYq3zrF0mEBgjgnA=
+github.com/haiyiyun/mongodb v0.0.0-20250714011737-3d2b9e934625 h1:YcC1uW/bda8rbxES966Xs20/ZuCG8MEal/6qbugjt9k=
+github.com/haiyiyun/mongodb v0.0.0-20250714011737-3d2b9e934625/go.mod h1:3+i7F89EUdcR4jkxKOkh32taTlQH7kxh0239qbrL11A=
 github.com/haiyiyun/plugins/user v0.0.0-20230120122813-2f699304561d h1:2DIt7nRaj2P/ClKNMQt7hMG2FKCMSIfSxFTIeMAFCTM=
 github.com/haiyiyun/plugins/user v0.0.0-20230120122813-2f699304561d/go.mod h1:bzlZArHga1Sc9bpAeRwvgOh6seqjZCpDpvbsxkppwIo=
-github.com/haiyiyun/uuid v0.0.0-20211115101403-e9c2d7112f99 h1:jDxzmDIkFtV81imkLj/PIYuRwNi0vk7hUxKmpVZSW5s=
-github.com/haiyiyun/uuid v0.0.0-20211115101403-e9c2d7112f99/go.mod h1:bAjSKCq9WJQ0y2X4vAsDk4EKpGCFYOgs/NF27oBYLKs=
+github.com/haiyiyun/uuid v0.0.0-20250713200226-2d57fe9fb802 h1:HFLfi4+UGq2jo7HW0AtQEWFaEBGQQ8kCv5WrMzjI2CM=
+github.com/haiyiyun/uuid v0.0.0-20250713200226-2d57fe9fb802/go.mod h1:8gtEO75m6Oojsi2ZNtOkSIfBnY0a5mKcF7eXlSQlvG8=
 github.com/haiyiyun/validator v1.1.1 h1:Ilz2n5XJCZR+hDAy72jU4odAhvQ34xSSEJ6obkIRx8A=
 github.com/haiyiyun/validator v1.1.1/go.mod h1:sPXApV8ET7Mz76KSGYy9Sb6453Zbp3Dn9hfuz35cSTU=
 github.com/leodido/go-urn v1.4.0 h1:WT9HwE9SGECu3lg4d/dIA+jxlljEa1/ffXKmRjqdmIQ=
