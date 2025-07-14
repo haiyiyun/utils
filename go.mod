@@ -6,7 +6,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/haiyiyun/log v0.0.0-20250714021242-243291bf2f88
 	github.com/haiyiyun/mongodb v0.0.0-20250714024937-af0b2494660a
-	github.com/haiyiyun/plugins/user v0.0.0-20230120122813-2f699304561d
+	github.com/haiyiyun/plugins/user v0.0.0-20250714041035-788266c8df11
 	github.com/haiyiyun/uuid v0.0.0-20250714025316-0cd7ec9ae801
 	github.com/haiyiyun/validator v1.1.2
 	github.com/robfig/cron/v3 v3.0.1
